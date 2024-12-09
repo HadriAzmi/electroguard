@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ElectroGuard: EV Insurance Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
+    <!-- Welcome Page -->
+    <div id="welcomePage" class="container mx-auto px-4 py-16 text-center">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-4xl mx-auto">
+            <div class="flex items-center justify-center mb-8">
+                <i class="fas fa-bolt text-6xl text-yellow-500 mr-4"></i>
+                <h1 class="text-5xl font-bold text-blue-800">ElectroGuard</h1>
+            </div>
+            <p class="text-xl text-gray-600 mb-8">
+                Comprehensive Insurance Solutions for Electric Vehicles
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-blue-100 p-6 rounded-xl hover:shadow-lg transition">
+                    <i class="fas fa-car-battery text-4xl text-blue-600 mb-4"></i>
+                    <h3 class="font-bold mb-2">Complete Coverage</h3>
+                    <p>Tailored protection for electric vehicles</p>
+                </div>
+                <div class="bg-green-100 p-6 rounded-xl hover:shadow-lg transition">
+                    <i class="fas fa-charging-station text-4xl text-green-600 mb-4"></i>
+                    <h3 class="font-bold mb-2">Charging Protection</h3>
+                    <p>Safeguard your home and public charging</p>
+                </div>
+                <div class="bg-purple-100 p-6 rounded-xl hover:shadow-lg transition">
+                    <i class="fas fa-shield-alt text-4xl text-purple-600 mb-4"></i>
+                    <h3 class="font-bold mb-2">24/7 Support</h3>
+                    <p>Emergency assistance whenever you need</p>
+                </div>
+            </div>
+
+            <div class="mt-12 space-x-4">
+                <button onclick="showInsuranceList()" 
+                        class="bg-blue-600 text-white px-8 py-3 rounded-full text-xl hover:bg-blue-700 transition transform hover:scale-105">
+                    Explore Insurance Options 
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button onclick="showAllPolicies()" 
+                        class="bg-green-600 text-white px-8 py-3 rounded-full text-xl hover:bg-green-700 transition transform hover:scale-105">
+                    View All Policies
+                    <i class="fas fa-info-circle ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insurance List Page -->
+    <div id="insuranceListPage" class="hidden container mx-auto px-4 py-16">
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <h2 class="text-3xl font-bold text-center mb-8 text-blue-800">
+                Insurance Selector
+            </h2>
+
+            <form id="insuranceForm" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-100 p-4 rounded-xl">
+                    <label class="block mb-2 font-semibold">Insurance Type</label>
+                    <select id="typeSelect" class="w-full p-2 border rounded">
+                        <option value="comprehensive">Comprehensive</option>
+                        <option value="thirdParty">Third Party</option>
+                    </select>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-xl">
+                    <label class="block mb-2 font-semibold">Price Range</label>
+                    <select id="priceSelect" class="w-full p-2 border rounded">
+                        <option value="all">All</option>
+                        <option value="7000">7,000 MYR</option>
+                        <option value="8000">8,000 MYR</option>
+                        <option value="9000">9,000 MYR</option>
+                    </select>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-xl">
+                    <label class="block mb-2 font-semibold">Sum Insured</label>
+                    <select id="sumInsuredSelect" class="w-full p-2 border rounded">
+                        <option value="all">All</option>
+                        <option value="200000">200,000 MYR</option>
+                        <option value="300000">300,000 MYR</option>
+                    </select>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-xl">
+                    <label class="block mb-2 font-semibold">Add-ons</label>
+                    <select id="addOnsSelect" class="w-full p-2 border rounded">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div class="bg-gray-100 p-4 rounded-xl">
+                    <label class="block mb-2 font-semibold">EV Brand</label>
+                    <select id="brandSelect" class="w-full p-2 border rounded">
+                        <option value="tesla">Tesla</option>
+                        <option value="generic">Generic</option>
+                    </select>
+                </div>
+
+                <div class="flex items-end">
+                    <button type="button" onclick="findInsurance()" 
+                            class="w-full bg-blue-600 text-white p-3 rounded-xl hover:bg-blue-700 transition">
+                        Find My Insurance
+                        <i class="fas fa-search ml-2"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div id="resultsArea" class="mt-8 bg-gray-50 rounded-xl p-6">
+                <h3 class="text-xl font-bold mb-4 text-blue-800">
+                    <i class="fas fa-list-alt mr-2"></i>
+                    Insurance Results
+                </h3>
+                <div id="resultsList"></div>
+            </div>
+
+            <div class="text-center mt-6 space-x-4">
+                <button onclick="resetInsuranceResults()" 
+                        class="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition">
+                    Reset Results
+                </button>
+                <button onclick="showWelcomePage()" 
+                        class="text-blue-600 hover:text-blue-800 transition">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Policies Modal -->
+    <div id="allPoliciesModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto">
+        <div class="relative w-full max-w-4xl mx-auto my-12 bg-white rounded-2xl shadow-2xl p-8">
+            <button onclick="closeAllPoliciesModal()" 
+                    class="absolute top-4 right-4 text-gray-600 hover:text-gray-900">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+
+            <h2 class="text-3xl font-bold text-center mb-8 text-blue-800">
+                All EV Insurance Policies
+            </h2>
+
+            <div id="policiesDetailsContainer" class="grid md:grid-cols-3 gap-6">
+                <!-- Policies will be dynamically populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const policies = [
+            {
+                name: 'Allianz EV Shield',
+                provider: 'Allianz',
+                type: 'comprehensive',
+                brand: 'generic',
+                addOns: 'no',
+                sumInsured: 'all',
+                price: 'all',
+                icon: 'fa-car-battery'
+            },
+            {
+                name: 'Allianz EV Shield',
+                provider: 'Allianz',
+                type: 'comprehensive',
+                brand: 'tesla',
+                addOns: 'no',
+                sumInsured: 'all',
+                price: 'all',
+                icon: 'fa-car-battery'
+            },
+            {
+                name: 'Liberty InsureMyTesla',
+                provider: 'Liberty',
+                type: 'comprehensive',
+                brand: 'tesla',
+                addOns: 'yes',
+                sumInsured: '300000',
+                price: 'all',
+                icon: 'fa-bolt'
+            },
+            
+            {
+                name: 'Maybank Etiqa Tesla Ensure',
+                provider: 'Maybank Etiqa',
+                type: 'comprehensive',
+                brand: 'tesla',
+                addOns: 'yes',
+                sumInsured: '200000',
+                price: '7000',
+                icon: 'fa-shield-alt'
+            }
+        ];
+
+        const policiesDetails = [
+            {
+                name: 'Allianz EV Shield',
+                provider: 'Allianz',
+                websiteLink: 'https://www.allianz.com.my/personal/home-motor-and-travel/car-and-motorcycle/ev-shield.html',
+                perks: [
+                    'Up to RM15,000 coverage for EV Home wall charger',
+                    '24 Hours Towing service',
+                    'Coverage for EV damage from public charging stations'
+                ],
+                icon: 'fa-car-battery',
+                color: 'blue'
+            },
+            {
+                name: 'Liberty InsureMyTesla',
+                provider: 'Liberty',
+                websiteLink: 'https://www.libertyinsurance.com.my/motor-insurance/private-car/insuremytesla',
+                perks: [
+                    'Up to RM12,000 private electric charger coverage',
+                    'Unlimited 24-hour towing',
+                    '12-month warranty for Tesla repairs'
+                ],
+                icon: 'fa-bolt',
+                color: 'green'
+            },
+            {
+                name: 'Maybank Etiqa Tesla Ensure',
+                provider: 'Etiqa',
+                websiteLink: 'https://www.etiqa.com.my/v2/car-ev/tesla-ensure',
+                perks: [
+                    'RM1,500 Flood Relief Allowance',
+                    'Home Wall Charger Coverage',
+                    'Free 24/7 Emergency Towing'
+                ],
+                icon: 'fa-shield-alt',
+                color: 'purple'
+            }
+        ];
+
+        function resetInsuranceResults() {
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = ''; // Clear the results
+        }
+        function showInsuranceList() {
+            document.getElementById('welcomePage').classList.add('hidden');
+            document.getElementById('insuranceListPage').classList.remove('hidden');
+        }
+
+        function showWelcomePage() {
+            resetInsuranceResults();
+            document.getElementById('welcomePage').classList.remove('hidden');
+            document.getElementById('insuranceListPage').classList.add('hidden');
+        }
+
+        function findInsurance() {
+    const type = document.getElementById('typeSelect').value;
+    const price = document.getElementById('priceSelect').value;
+    const sumInsured = document.getElementById('sumInsuredSelect').value;
+    const addOns = document.getElementById('addOnsSelect').value;
+    const brand = document.getElementById('brandSelect').value;
+
+    const resultsList = document.getElementById('resultsList');
+    resultsList.innerHTML = '';
+
+    if (type === 'thirdParty') {
+        resultsList.innerHTML = '<p class="text-red-500">No policies match third-party insurance.</p>';
+        return;
+    }
+
+    const matchedPolicies = policies.filter(policy => 
+        (type === policy.type || type === 'all') &&
+        (policy.price === 'all' || price === 'all' || price === policy.price) &&
+        (policy.sumInsured === 'all' || sumInsured === 'all' || sumInsured === policy.sumInsured) &&
+        (policy.addOns === 'all' || addOns === 'all' || addOns === policy.addOns) &&
+        (policy.brand === 'all' || brand === 'all' || brand === policy.brand)
+    );
+
+    if (matchedPolicies.length === 0) {
+        resultsList.innerHTML = '<p class="text-red-500">No policies match your selected criteria.</p>';
+    } else {
+        matchedPolicies.forEach(policy => {
+            const fullPolicyDetails = policiesDetails.find(p => p.name === policy.name);
+            resultsList.innerHTML += `
+                <div class="bg-white p-4 rounded-xl shadow mb-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas ${fullPolicyDetails.icon} text-3xl mr-4 text-${fullPolicyDetails.color}-600"></i>
+                        <div>
+                            <h3 class="font-bold text-lg">${policy.name}</h3>
+                            <p class="text-gray-600">Provider: ${policy.provider}</p>
+                        </div>
+                    </div>
+                    <a href="${fullPolicyDetails.websiteLink}" 
+                       target="_blank" 
+                       class="bg-${fullPolicyDetails.color}-500 text-white px-4 py-2 rounded hover:bg-${fullPolicyDetails.color}-600 transition">
+                        Visit Website
+                    </a>
+                </div>
+            `;
+        });
+    }
+}
+
+
+
+        function showAllPolicies() {
+            const container = document.getElementById('policiesDetailsContainer');
+            container.innerHTML = '';
+
+            policiesDetails.forEach(policy => {
+                container.innerHTML += `
+                    <div class="bg-${policy.color}-50 p-6 rounded-xl hover:shadow-lg transition">
+                        <div class="flex justify-between items-center mb-4">
+                            <i class="fas ${policy.icon} text-4xl text-${policy.color}-600"></i>
+                            <a href="${policy.websiteLink}" 
+                               target="_blank" 
+                               class="bg-${policy.color}-500 text-white px-4 py-2 rounded hover:bg-${policy.color}-600 transition">
+                                Official Site
+                            </a>
+                        </div>
+                        <h3 class="font-bold text-xl mb-2 text-${policy.color}-800">${policy.name}</h3>
+                        <p class="text-gray-700 mb-4">Provider: ${policy.provider}</p>
+                        <h4 class="font-semibold mb-2">Key Perks:</h4>
+                        <ul class="list-disc list-inside text-gray-600">
+                            ${policy.perks.map(perk => `<li>${perk}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+
+            document.getElementById('allPoliciesModal').classList.remove('hidden');
+        }
+
+        function closeAllPoliciesModal() {
+            document.getElementById('allPoliciesModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
